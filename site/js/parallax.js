@@ -5,8 +5,11 @@
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const finePointer = matchMedia('(pointer: fine)');
 
-/** @param {HTMLElement[]} scenes */
-export function initParallax(scenes) {
+/**
+ * @param {HTMLElement[]} scenes
+ * @param {HTMLInputElement | null} stillToggle when checked, layers rest in place
+ */
+export function initParallax(scenes, stillToggle) {
   if (reducedMotion.matches) return;
 
   const visible = new Set();
@@ -15,6 +18,14 @@ export function initParallax(scenes) {
 
   const render = () => {
     frame = 0;
+    if (stillToggle?.checked) {
+      for (const scene of scenes) {
+        scene.style.removeProperty('--progress');
+        scene.style.removeProperty('--pointer-x');
+        scene.style.removeProperty('--pointer-y');
+      }
+      return;
+    }
     for (const scene of visible) {
       const { top, height } = scene.getBoundingClientRect();
       const progress = (innerHeight - top) / (height + innerHeight);
@@ -38,6 +49,7 @@ export function initParallax(scenes) {
 
   addEventListener('scroll', schedule, { passive: true });
   addEventListener('resize', schedule, { passive: true });
+  stillToggle?.addEventListener('change', schedule);
 
   if (finePointer.matches) {
     addEventListener(
