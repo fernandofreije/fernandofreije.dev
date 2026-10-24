@@ -78,7 +78,8 @@
   order: -1;
   font-size: 0.8rem;
   letter-spacing: 0.2em;
-  text-transform: uppercase;
+  /* No text-transform: Cinzel draws lowercase as small capitals anyway, and
+     uppercased names can be spelled out letter by letter by screen readers. */
   opacity: 0;
   translate: 0.5rem 0;
   transition:
