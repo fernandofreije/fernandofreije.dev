@@ -99,3 +99,81 @@
   font-style: italic;
   text-align: center;
 }
+
+/*
+ * "Pause animations" switch (WCAG 2.2.2). Checking it stills every scene into a
+ * resting composition; JS only persists the choice and stops parallax.
+ * With prefers-reduced-motion nothing moves anyway, so the switch is hidden.
+ */
+.motion-toggle {
+  position: fixed;
+  left: var(--gutter);
+  bottom: max(var(--space-2), env(safe-area-inset-bottom));
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.8rem 0.4rem 0.5rem;
+  border: 1px solid rgb(243 234 216 / 0.35);
+  border-radius: 999px;
+  background: rgb(0 0 0 / 0.55);
+  backdrop-filter: blur(4px);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+.motion-toggle input {
+  appearance: none;
+  position: relative;
+  flex-shrink: 0;
+  width: 2.2rem;
+  height: 1.25rem;
+  margin: 0;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.motion-toggle input::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0.2rem;
+  width: 0.8rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: currentColor;
+  translate: 0 -50%;
+  transition: translate 0.2s var(--ease-out);
+}
+
+.motion-toggle input:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.motion-toggle input:checked::before {
+  background: var(--night);
+  translate: 0.95rem -50%;
+}
+
+:root:has(#motion-toggle:checked) {
+  & .stage,
+  & .stage::after,
+  & .layer {
+    animation: none;
+  }
+
+  /* Rest on a single campfire frame. */
+  & .layer[data-role="fire"] + .layer[data-role="fire"] {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-toggle {
+    display: none;
+  }
+}
