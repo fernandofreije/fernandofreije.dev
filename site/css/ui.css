@@ -172,6 +172,16 @@
   }
 }
 
+/* On phones a floating switch would cover the text; park it at the top of the page.
+   It stays the first control in tab order either way. */
+@media (max-width: 40rem) {
+  .motion-toggle {
+    position: absolute;
+    top: var(--space-2);
+    bottom: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .motion-toggle {
     display: none;
