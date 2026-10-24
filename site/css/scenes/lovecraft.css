@@ -36,6 +36,8 @@
 .page {
   --ink-red: #8c1d3c;
   --margin: 3.4rem;
+  --postmark-size: 5.8rem;
+  --postmark-top: var(--space-2);
 
   position: relative;
   padding: var(--space-3) var(--space-3) var(--space-3) calc(var(--margin) + var(--space-2));
@@ -132,37 +134,41 @@
 /* Postmark stamp for the place. */
 .page__postmark {
   position: absolute;
-  top: var(--space-2);
+  top: var(--postmark-top);
   right: var(--space-2);
   display: grid;
   place-items: center;
-  width: 5.4rem;
+  width: var(--postmark-size);
   aspect-ratio: 1;
   border: 2px solid currentColor;
   border-radius: 50%;
   outline: 1px solid currentColor;
   outline-offset: -6px;
   font-family: var(--font-display);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   line-height: 1.3;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-align: center;
-  text-transform: uppercase;
   /* ~7.5:1 on the paper even after the multiply blend. */
   color: rgb(30 44 70 / 0.85);
   mix-blend-mode: multiply;
   rotate: 14deg;
 }
 
+/* The header reserves the postmark's height so notes never run underneath it. */
+.page > header {
+  min-height: calc(var(--postmark-top) + var(--postmark-size) - var(--space-3));
+}
+
 .page h3 {
-  padding-right: 5.5rem;
+  padding-right: 6rem;
   font-size: 1.5rem;
   color: var(--paper-ink);
 }
 
 .page__role {
   margin-block: 0.15rem var(--space-2);
-  padding-right: 5.5rem;
+  padding-right: 6rem;
   font-style: italic;
   color: color-mix(in srgb, var(--paper-ink) 72%, transparent);
 }
@@ -201,10 +207,9 @@
   border: 1.5px solid currentColor;
   border-radius: 3px;
   font-family: var(--font-display);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0.08em;
   color: var(--ink-red);
   mix-blend-mode: multiply;
   opacity: 0.8;
@@ -313,11 +318,11 @@
 
   .page {
     --margin: 2.6rem;
+    /* Overhang the page corner so the stamp clears the text on narrow pages. */
+    --postmark-top: -0.9rem;
   }
 
-  /* Overhang the page corner so the stamp clears the text on narrow pages. */
   .page__postmark {
-    top: -0.9rem;
     right: 0.25rem;
   }
 
