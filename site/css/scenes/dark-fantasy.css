@@ -1,0 +1,86 @@
+/* Chapter I: the knight's campfire. Title card and fire animation. */
+
+.scene--dark-fantasy {
+  --scene-bg: #2a1f6e;
+  --accent: #e7b45a;
+}
+
+.scene--dark-fantasy .scene__backdrop::before {
+  background-image: url("../../assets/dark-fantasy/cielo-s.webp");
+}
+
+.title-plate {
+  max-width: 34rem;
+  padding-top: clamp(1rem, 6svh, 4rem);
+  text-shadow:
+    0 2px 2px rgb(0 0 0 / 0.6),
+    0 0 24px rgb(10 6 40 / 0.9);
+}
+
+.title-plate__name {
+  margin-block: var(--space-1) var(--space-1);
+  font-size: clamp(3rem, 2rem + 6vw, 6.5rem);
+  letter-spacing: 0.04em;
+  color: #fff6e4;
+}
+
+.title-plate__surname {
+  display: block;
+  font-size: 0.42em;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+}
+
+.title-plate__role {
+  font-family: var(--font-hand);
+  font-size: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+  font-style: italic;
+  color: var(--accent);
+}
+
+.title-plate__intro {
+  margin-top: var(--space-3);
+  max-width: 26rem;
+}
+
+/* Two fire frames: the second one blinks on top of the first. */
+.layer[data-role="fire"] + .layer[data-role="fire"] {
+  animation: fire-flicker 0.7s steps(1, end) infinite;
+}
+
+@keyframes fire-flicker {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Warm light pulsing from the campfire. */
+.scene--dark-fantasy .stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 51% 86%,
+    rgb(255 150 60 / 0.22),
+    transparent 22%
+  );
+  mix-blend-mode: screen;
+  animation: fire-glow 2.3s ease-in-out infinite alternate;
+}
+
+@keyframes fire-glow {
+  from {
+    opacity: 0.6;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-aspect-ratio: 1 / 1) {
+  .scene--dark-fantasy {
+    --focus-x: 44%;
+  }
+}
