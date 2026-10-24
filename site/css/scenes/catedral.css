@@ -98,3 +98,9 @@
     padding-bottom: 6rem;
   }
 }
+
+@media (forced-colors: active) {
+  .calling-card__seal {
+    border: 2px solid CanvasText;
+  }
+}

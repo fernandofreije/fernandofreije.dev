@@ -336,3 +336,18 @@
     font-size: 1.3rem;
   }
 }
+
+/* Windows High Contrast and other forced palettes: blend modes would turn the
+   stamps' system-coloured ink invisible, and pages lose their paper backgrounds. */
+@media (forced-colors: active) {
+  .page {
+    border: 1px solid CanvasText;
+  }
+
+  .page__postmark,
+  .page__stamps li {
+    color: CanvasText;
+    mix-blend-mode: normal;
+    opacity: 1;
+  }
+}
