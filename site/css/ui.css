@@ -188,6 +188,28 @@
   }
 }
 
+/* Forced palettes override the knob and fill backgrounds, hiding the switch state;
+   draw it with system colours instead. */
+@media (forced-colors: active) {
+  .motion-toggle input {
+    forced-color-adjust: none;
+    border-color: ButtonText;
+  }
+
+  .motion-toggle input::before {
+    background: ButtonText;
+  }
+
+  .motion-toggle input:checked {
+    background: Highlight;
+    border-color: Highlight;
+  }
+
+  .motion-toggle input:checked::before {
+    background: HighlightText;
+  }
+}
+
 /* On phones a floating switch would cover the text; park it at the top of the page.
    It stays the first control in tab order either way. */
 @media (max-width: 40rem) {
