@@ -14,6 +14,16 @@ It's deliberately small: semantic HTML, modern CSS and ~100 lines of JavaScript.
 
 **Content is plain HTML.** The CV is written inline as semantic markup (`<article>`, `<time>`, real headings), so it's readable without JavaScript, by screen readers, crawlers and link previews.
 
+## Accessibility
+
+The goal is WCAG 2.2 AA, checked rather than assumed:
+
+- **Motion can always be stopped.** A "Pause animations" switch stills every scene. It's a real checkbox that CSS reacts to via `:has()`, so it works without JavaScript, and the choice is remembered. `prefers-reduced-motion` turns motion off by default.
+- **Readable over the art.** Text on the illustrations sits on a soft scrim. Contrast was measured against the brightest pixels behind each line, at every position of the mobile pan.
+- **Reflows to 320px** (400% zoom) without horizontal scrolling. It also holds up in Windows High Contrast: stamps, postmarks and the pause switch use system colours there.
+- **Screen readers get the whole story:** one short description per illustration, a clear heading outline, and chapter links named "Chapter I, Prologue". Content is never left hidden by the scroll reveal, whether focus moves into it, JS fails or the page is printed.
+- **Automated in the visual check.** `npm run shots` runs axe-core at four viewports, flags horizontal overflow, and can emulate reduced motion and forced colours.
+
 ## The art pipeline
 
 The illustrations are exported as full-canvas transparent PNGs, one per layer. Shipped as-is, that was 22 images at 4000×3000: about 14MB to download and roughly 1GB of decoded bitmaps.
