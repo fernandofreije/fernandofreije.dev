@@ -1,10 +1,11 @@
 /* ui.css: in-world UI shared by every scene (chapter rail, reveal, footer) */
 
+/* Small-caps labels. Cinzel has no lowercase (it draws small capitals), so no
+   text-transform is needed, which keeps screen readers from spelling words out. */
 .kicker {
   font-family: var(--font-display);
-  font-size: 0.8rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.22em;
   color: var(--accent);
 }
 
@@ -76,7 +77,7 @@
 
 .chapters__label {
   order: -1;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   letter-spacing: 0.2em;
   /* No text-transform: Cinzel draws lowercase as small capitals anyway, and
      uppercased names can be spelled out letter by letter by screen readers. */
@@ -134,7 +135,7 @@
   background: rgb(0 0 0 / 0.55);
   backdrop-filter: blur(4px);
   font-family: var(--font-display);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   letter-spacing: 0.08em;
   cursor: pointer;
 }
