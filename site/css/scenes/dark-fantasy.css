@@ -10,11 +10,29 @@
 }
 
 .title-plate {
+  position: relative;
+  isolation: isolate;
   max-width: 34rem;
   padding-top: clamp(1rem, 6svh, 4rem);
   text-shadow:
     0 2px 2px rgb(0 0 0 / 0.6),
     0 0 24px rgb(10 6 40 / 0.9);
+}
+
+/* A soft pool of night behind the text, so contrast holds wherever the art is
+   bright, including while the stage pans behind it on phones. */
+.title-plate::before {
+  content: "";
+  position: absolute;
+  inset: -2rem -4rem -3rem -6rem;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse closest-side,
+    rgb(10 6 40 / 0.7),
+    rgb(10 6 40 / 0.45) 60%,
+    transparent
+  );
+  pointer-events: none;
 }
 
 .title-plate__name {
