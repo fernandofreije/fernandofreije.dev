@@ -11,7 +11,14 @@
     <meta property="og:description" content="A personal site told in three illustrated chapters." />
     <meta property="og:image" content="assets/og.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <script>document.documentElement.classList.add("js")</script>
+    <script>
+      // Content fades in on scroll (js/reveal.js). If that never initialises, show everything.
+      document.documentElement.classList.add("js");
+      setTimeout(() => {
+        const root = document.documentElement;
+        if (!root.classList.contains("reveal-ready")) root.classList.remove("js");
+      }, 3000);
+    </script>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
