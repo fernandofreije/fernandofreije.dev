@@ -77,7 +77,13 @@ for (const name of selected) {
   // Accessibility: every scene has been revealed by now, so axe sees the final state.
   // Contrast over the illustrations can't be computed by axe and comes back as "incomplete".
   await page.addScriptTag({ path: axePath });
-  const { violations } = await page.evaluate((tags) => axe.run(document, { runOnly: tags }), AXE_TAGS);
+  // axe ignores forced colours and measures the authored colours, so its contrast
+  // results are meaningless in that mode; the system palette guarantees contrast.
+  const rules = opts['forced-colors'] ? { 'color-contrast': { enabled: false } } : {};
+  const { violations } = await page.evaluate(
+    ([tags, rules]) => axe.run(document, { runOnly: tags, rules }),
+    [AXE_TAGS, rules],
+  );
   for (const v of violations) {
     problems.push(`axe ${v.id} (${v.impact}): ${v.help} -> ${v.nodes.map((n) => n.target.join(' ')).slice(0, 3).join(' | ')}`);
   }
