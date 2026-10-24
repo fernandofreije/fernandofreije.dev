@@ -9,6 +9,7 @@
     "shots": "node .claude/skills/visual-check/run.mjs"
   },
   "devDependencies": {
+    "axe-core": "^4.10.2",
     "playwright-core": "^1.48.2",
     "serve": "^14.2.4",
     "sharp": "^0.33.5"
