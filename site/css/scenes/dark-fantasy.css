@@ -43,13 +43,24 @@
   max-width: 26rem;
 }
 
-/* Two fire frames: the second one blinks on top of the first. */
-.layer[data-role="fire"] + .layer[data-role="fire"] {
+/* Two fire frames shown alternately: the second runs half a cycle behind the first,
+   so exactly one of them is visible at any moment. */
+.layer[data-role="fire"] {
   animation: fire-flicker 0.7s steps(1, end) infinite;
+}
+
+.layer[data-role="fire"] + .layer[data-role="fire"] {
+  animation-delay: -0.35s;
 }
 
 @keyframes fire-flicker {
   50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layer[data-role="fire"] + .layer[data-role="fire"] {
     opacity: 0;
   }
 }
