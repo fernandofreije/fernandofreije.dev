@@ -1,0 +1,101 @@
+/* ui.css: in-world UI shared by every scene (chapter rail, reveal, footer) */
+
+.kicker {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Content fades up the first time its scene comes into view (see js/reveal.js). */
+.js .scene__content > * {
+  opacity: 0;
+  translate: 0 2rem;
+  transition:
+    opacity 1.2s var(--ease-out),
+    translate 1.2s var(--ease-out);
+}
+
+.js .scene.is-revealed .scene__content > * {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* Chapter rail: roman numerals pinned to the right edge. */
+.chapters {
+  position: fixed;
+  right: var(--gutter);
+  top: 50%;
+  z-index: 10;
+  translate: 0 -50%;
+}
+
+.chapters ol {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: end;
+}
+
+.chapters a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-display);
+  text-decoration: none;
+  color: var(--ink-muted);
+  text-shadow: 0 1px 6px rgb(0 0 0 / 0.8);
+  transition: color 0.3s;
+}
+
+.chapters__numeral {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  aspect-ratio: 1;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.35);
+  backdrop-filter: blur(4px);
+  font-size: 0.85rem;
+}
+
+.chapters__label {
+  order: -1;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0;
+  translate: 0.5rem 0;
+  transition:
+    opacity 0.3s,
+    translate 0.3s var(--ease-out);
+}
+
+.chapters a:hover,
+.chapters a:focus-visible,
+.chapters a[aria-current="true"] {
+  color: var(--accent);
+}
+
+.chapters a:hover .chapters__label,
+.chapters a:focus-visible .chapters__label {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* On phones the rail would float over the text; plain scrolling is navigation enough. */
+@media (max-width: 40rem) {
+  .chapters {
+    display: none;
+  }
+}
+
+.site-footer {
+  padding: var(--space-4) var(--gutter) var(--space-5);
+  background: var(--night);
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+  text-align: center;
+}

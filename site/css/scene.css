@@ -1,0 +1,122 @@
+/*
+ * scene.css: the layered-art engine.
+ *
+ * A scene is a sticky, full-viewport backdrop with content scrolling over it.
+ * The backdrop holds a 4:3 "stage" that mirrors the 4000×3000 source canvas.
+ *
+ * Landscape: the stage is sized like `object-fit: contain`, so the art is never
+ * cropped. Leftover space shows an ambient, blurred copy of the scene's sky
+ * (set per scene on .scene__backdrop::before) and the art's edges fade into it.
+ *
+ * Portrait: containing the art would shrink it to a strip, so the stage fills
+ * the height and slowly pans across the whole painting instead.
+ *
+ * Each layer is cropped to its visible pixels and positioned on the stage using
+ * --x/--y/--w from layers.generated.css. Parallax is pure CSS: JS only writes
+ * --pointer-x/--pointer-y (-1…1) and --progress (0…1 through the scene).
+ */
+
+@property --pan {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 50%;
+}
+
+.scene {
+  --parallax-pointer: 18px;
+  --parallax-scroll: 60px;
+
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+}
+
+.scene__backdrop {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--scene-bg, var(--night));
+}
+
+/* Ambient fill for the space around the art. */
+.scene__backdrop::before {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(40px) brightness(0.55) saturate(1.2);
+}
+
+.stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(100vw, 100svh * 4 / 3);
+  aspect-ratio: 4 / 3;
+  translate: -50% -50%;
+  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+}
+
+@media (orientation: portrait) {
+  .stage {
+    left: var(--pan);
+    width: auto;
+    height: 100%;
+    translate: calc(var(--pan) * -1) -50%;
+    mask-image: none;
+    /* Negative delay starts mid-pan, on the centre of the painting. */
+    animation: pan 40s ease-in-out -20s infinite alternate;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stage {
+      --pan: var(--focus-x, 50%);
+      animation: none;
+    }
+  }
+}
+
+@keyframes pan {
+  from {
+    --pan: 0%;
+  }
+  to {
+    --pan: 100%;
+  }
+}
+
+.layer {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  transform: translate3d(
+    calc(var(--pointer-x, 0) * var(--depth) * var(--parallax-pointer)),
+    calc(
+      var(--pointer-y, 0) * var(--depth) * var(--parallax-pointer) +
+        (0.5 - var(--progress, 0.5)) * var(--depth) * var(--parallax-scroll)
+    ),
+    0
+  );
+}
+
+/* Content flows over the sticky backdrop: pull it up by one viewport. */
+.scene__content {
+  position: relative;
+  z-index: 1;
+  margin-top: -100svh;
+  min-height: 100svh;
+  padding: var(--space-5) var(--gutter);
+}
+
+/* Keep content clear of the fixed chapter rail. */
+@media (min-width: 40.01rem) {
+  .scene__content {
+    padding-inline-end: calc(var(--gutter) + 4rem);
+  }
+}

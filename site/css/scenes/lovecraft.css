@@ -1,0 +1,313 @@
+/* Chapter II: the scholar's coast. Journal pages and emerging tentacles. */
+
+.scene--lovecraft {
+  --scene-bg: #0d2a24;
+  --accent: #ff4f8b;
+  --paper: #e8dcc0;
+  --paper-ink: #2a1d14;
+}
+
+.scene--lovecraft .scene__backdrop::before {
+  background-image: url("../../assets/lovecraft/cielo-s.webp");
+}
+
+.scene--lovecraft .scene__content {
+  display: grid;
+  justify-items: end;
+  align-content: start;
+  gap: var(--space-4);
+  /* Let the art be seen first; the journal then scrolls up over it. */
+  padding-block: 70svh 20svh;
+}
+
+/*
+ * The scholar's case journal: ledger pages strung on an ink thread.
+ * Each entry has its years written in the margin, a postmark for the place,
+ * notes, and the stack inked as stamps. Education is a letter tucked in the back.
+ */
+
+.page,
+.journal {
+  width: min(100%, 30rem);
+}
+
+.page {
+  --ink-red: #8c1d3c;
+  --margin: 3.4rem;
+
+  position: relative;
+  padding: var(--space-3) var(--space-3) var(--space-3) calc(var(--margin) + var(--space-2));
+  background:
+    /* ledger margin rule */
+    linear-gradient(to right, transparent calc(var(--margin) - 3px), rgb(140 29 60 / 0.45) 0 calc(var(--margin) - 2px), transparent 0 var(--margin), rgb(140 29 60 / 0.45) 0 calc(var(--margin) + 1px), transparent 0),
+    radial-gradient(ellipse at 30% 20%, rgb(255 255 255 / 0.35), transparent 60%),
+    radial-gradient(ellipse at 80% 90%, rgb(120 80 30 / 0.25), transparent 55%),
+    var(--paper);
+  color: var(--paper-ink);
+  font-family: var(--font-hand);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.4) inset,
+    0 18px 40px rgb(0 0 0 / 0.55);
+  rotate: -0.8deg;
+}
+
+.page--heading {
+  padding-left: var(--space-4);
+  background:
+    radial-gradient(ellipse at 30% 20%, rgb(255 255 255 / 0.35), transparent 60%),
+    radial-gradient(ellipse at 80% 90%, rgb(120 80 30 / 0.25), transparent 55%),
+    var(--paper);
+}
+
+.page--heading h2 {
+  font-size: clamp(2rem, 1.6rem + 2vw, 3rem);
+  color: var(--paper-ink);
+}
+
+.page--heading .kicker {
+  color: var(--ink-red);
+}
+
+/* The ink thread connecting entries. */
+.journal {
+  position: relative;
+  display: grid;
+  gap: var(--space-4);
+  padding-left: 2.5rem;
+}
+
+.journal::before {
+  content: "";
+  position: absolute;
+  top: 1rem;
+  bottom: 1rem;
+  left: 0.6rem;
+  width: 1rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='80' viewBox='0 0 16 80'%3E%3Cpath d='M8 0c7 10 7 30 0 40S1 70 8 80' fill='none' stroke='%23ff4f8b' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E")
+    repeat-y center / 100% auto;
+  filter: drop-shadow(0 0 6px rgb(255 79 139 / 0.6));
+  opacity: 0.85;
+}
+
+.entry {
+  position: relative;
+}
+
+/* A knot on the thread for each entry. */
+.entry::before {
+  content: "";
+  position: absolute;
+  top: 1.6rem;
+  left: -2.15rem;
+  width: 0.9rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffb3cd, var(--accent) 60%);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.entry:nth-child(even) .page {
+  rotate: 0.7deg;
+}
+
+/* Years written sideways in the margin. */
+.page__years {
+  position: absolute;
+  top: var(--space-3);
+  left: 0;
+  width: var(--margin);
+  writing-mode: vertical-rl;
+  rotate: 180deg;
+  display: flex;
+  align-items: center;
+  font-size: 1.05rem;
+  font-style: italic;
+  white-space: nowrap;
+  color: var(--ink-red);
+}
+
+/* Postmark stamp for the place. */
+.page__postmark {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  display: grid;
+  place-items: center;
+  width: 4.4rem;
+  aspect-ratio: 1;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  outline: 1px solid currentColor;
+  outline-offset: -6px;
+  font-family: var(--font-display);
+  font-size: 0.55rem;
+  line-height: 1.3;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+  color: rgb(42 60 90 / 0.65);
+  mix-blend-mode: multiply;
+  rotate: 14deg;
+}
+
+.page h3 {
+  padding-right: 4.5rem;
+  font-size: 1.5rem;
+  color: var(--paper-ink);
+}
+
+.page__role {
+  margin-block: 0.15rem var(--space-2);
+  padding-right: 4.5rem;
+  font-style: italic;
+  color: color-mix(in srgb, var(--paper-ink) 72%, transparent);
+}
+
+.page__notes {
+  display: grid;
+  gap: 0.35rem;
+  font-family: var(--font-body);
+  line-height: 1.4;
+}
+
+.page__notes li {
+  position: relative;
+  padding-left: 1.1rem;
+}
+
+.page__notes li::before {
+  content: "✦";
+  position: absolute;
+  left: 0;
+  font-size: 0.7em;
+  line-height: 2;
+  color: var(--ink-red);
+}
+
+/* The stack, inked on as rubber stamps. */
+.page__stamps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.5rem;
+  margin-top: var(--space-2);
+}
+
+.page__stamps li {
+  padding: 0.1rem 0.5rem;
+  border: 1.5px solid currentColor;
+  border-radius: 3px;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-red);
+  mix-blend-mode: multiply;
+  opacity: 0.8;
+  rotate: -2deg;
+}
+
+.page__stamps li:nth-child(even) {
+  rotate: 1.5deg;
+}
+
+/* Education: a folded letter tucked into the back of the journal. */
+.page--letter {
+  --paper: #f1e9d6;
+
+  width: 90%;
+  margin-left: auto;
+  background:
+    linear-gradient(to bottom, transparent 49.5%, rgb(90 60 30 / 0.18) 50%, rgb(255 255 255 / 0.4) 50.5%, transparent 51.5%),
+    linear-gradient(to right, transparent calc(var(--margin) - 3px), rgb(140 29 60 / 0.45) 0 calc(var(--margin) - 2px), transparent 0 var(--margin), rgb(140 29 60 / 0.45) 0 calc(var(--margin) + 1px), transparent 0),
+    var(--paper);
+  rotate: 2deg;
+}
+
+.entry--letter::before {
+  background: radial-gradient(circle at 35% 35%, #fff, #c9b98f 60%);
+  box-shadow: 0 0 10px rgb(255 240 200 / 0.6);
+}
+
+/*
+ * Tentacles rise out of the sea one after another, writhe by mirroring back and
+ * forth a few times, then sink. `translate` + a matching bottom `clip-path` keep
+ * the waterline fixed while the tentacle slides through it; `scale` does the
+ * mirroring around the tentacle's base. `transform` is left free for parallax.
+ */
+.layer[data-role="tentacle"] {
+  --cycle: 14s;
+  transform-origin: 50% 100%;
+  animation: tentacle-emerge var(--cycle) var(--ease-out) calc(var(--i) * 1.4s) infinite both paused;
+}
+
+.scene--lovecraft.is-in-view .layer[data-role="tentacle"] {
+  animation-play-state: running;
+}
+
+.layer--lovecraft-tentacle-1 { --i: 0; }
+.layer--lovecraft-tentacle-2 { --i: 1; }
+.layer--lovecraft-tentacle-3 { --i: 2; }
+.layer--lovecraft-tentacle-4 { --i: 3; }
+.layer--lovecraft-tentacle-5 { --i: 4; }
+
+@keyframes tentacle-emerge {
+  0% {
+    translate: 0 100%;
+    clip-path: inset(0 0 100% 0);
+  }
+  15%,
+  70% {
+    translate: 0 0;
+    clip-path: inset(0 0 0 0);
+  }
+  85%,
+  100% {
+    translate: 0 100%;
+    clip-path: inset(0 0 100% 0);
+  }
+
+  /* Writhing: two quick mirror-and-back turns while fully risen. */
+  0%,
+  22%,
+  36%,
+  42%,
+  56%,
+  100% {
+    scale: 1 1;
+  }
+  25%,
+  33%,
+  45%,
+  53% {
+    scale: -1 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layer[data-role="tentacle"] {
+    animation: none;
+  }
+}
+
+@media (max-width: 40rem) {
+  .scene--lovecraft .scene__content {
+    justify-items: center;
+  }
+
+  .journal {
+    padding-left: 1.8rem;
+  }
+
+  .journal::before {
+    left: 0.2rem;
+  }
+
+  .entry::before {
+    left: -1.85rem;
+  }
+
+  .page {
+    --margin: 2.6rem;
+  }
+}

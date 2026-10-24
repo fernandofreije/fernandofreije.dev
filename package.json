@@ -1,0 +1,16 @@
+{
+  "name": "persona-webpage",
+  "private": true,
+  "type": "module",
+  "description": "Layered-art personal site. Static, build-free; tooling here is dev-only.",
+  "scripts": {
+    "dev": "serve site -l 8080",
+    "images": "node scripts/optimize-images.mjs",
+    "shots": "node .claude/skills/visual-check/run.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.48.2",
+    "serve": "^14.2.4",
+    "sharp": "^0.33.5"
+  }
+}

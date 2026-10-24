@@ -1,0 +1,147 @@
+// Turns the full-canvas source PNGs in art-src/ into web-ready layers.
+//
+// Every source layer is a 4000×3000 canvas that is mostly transparent. For each one we:
+//   1. crop to the bounding box of its visible pixels,
+//   2. export that crop as WebP at two sizes,
+//   3. record where the crop sits on the canvas (as percentages).
+// The positions go to site/css/layers.generated.css and the <img> markup is written
+// into the `<!-- layers:<scene> -->` regions of site/index.html.
+//
+// Usage: npm run images
+
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import sharp from 'sharp';
+import { CANVAS, SCALES, scenes } from './scenes.config.mjs';
+
+const ROOT = path.resolve(import.meta.dirname, '..');
+const SRC_DIR = path.join(ROOT, 'art-src');
+const SITE_DIR = path.join(ROOT, 'site');
+const ALPHA_THRESHOLD = 8; // ignore near-invisible antialiasing noise when cropping
+const PADDING = 4; // px of breathing room so soft edges are not clipped
+
+/** Bounding box of pixels whose alpha exceeds the threshold. */
+async function visibleBounds(file) {
+  const { data, info } = await sharp(file).ensureAlpha().extractChannel('alpha').raw()
+    .toBuffer({ resolveWithObject: true });
+  let top = info.height, left = info.width, bottom = -1, right = -1;
+  for (let y = 0; y < info.height; y++) {
+    const row = y * info.width;
+    for (let x = 0; x < info.width; x++) {
+      if (data[row + x] > ALPHA_THRESHOLD) {
+        if (y < top) top = y;
+        if (y > bottom) bottom = y;
+        if (x < left) left = x;
+        if (x > right) right = x;
+      }
+    }
+  }
+  if (bottom < 0) throw new Error(`${file} is fully transparent`);
+  left = Math.max(0, left - PADDING);
+  top = Math.max(0, top - PADDING);
+  right = Math.min(info.width - 1, right + PADDING);
+  bottom = Math.min(info.height - 1, bottom + PADDING);
+  return { left, top, width: right - left + 1, height: bottom - top + 1 };
+}
+
+const pct = (value, total) => `${+((value / total) * 100).toFixed(3)}%`;
+
+async function processLayer(scene, layer, index) {
+  const name = layer.name ?? path.basename(layer.src, '.png');
+  const file = path.join(SRC_DIR, scene, layer.src);
+  const box = await visibleBounds(file);
+  const outDir = path.join(SITE_DIR, 'assets', scene);
+  await mkdir(outDir, { recursive: true });
+
+  const variants = [];
+  for (const [suffix, scale] of Object.entries(SCALES)) {
+    const width = Math.round(box.width * scale);
+    const out = path.join(outDir, `${name}-${suffix}.webp`);
+    const { size } = await sharp(file).extract(box).resize({ width })
+      .webp({ quality: 80, alphaQuality: 90, effort: 6 }).toFile(out);
+    variants.push({ url: `assets/${scene}/${name}-${suffix}.webp`, width, size });
+  }
+
+  return { scene, name, index, box, variants, ...layer };
+}
+
+function cssRule(l) {
+  const vars = [
+    `--x: ${pct(l.box.left, CANVAS.width)}`,
+    `--y: ${pct(l.box.top, CANVAS.height)}`,
+    `--w: ${pct(l.box.width, CANVAS.width)}`,
+    `--depth: ${l.depth}`,
+    `z-index: ${l.index + 1}`,
+  ];
+  return `.layer--${l.scene}-${l.name} { ${vars.join('; ')}; }`;
+}
+
+function imgTag(l, eager) {
+  const widthFraction = +(l.box.width / CANVAS.width).toFixed(4);
+  const [small, large] = l.variants;
+  const attrs = [
+    `class="layer layer--${l.scene}-${l.name}"`,
+    l.role && `data-role="${l.role}"`,
+    `src="${small.url}"`,
+    `srcset="${small.url} ${small.width}w, ${large.url} ${large.width}w"`,
+    // Stage width (see scene.css): fills the height in portrait, contained otherwise.
+    `sizes="(orientation: portrait) calc(133.34svh * ${widthFraction}), calc(min(100vw, 133.34svh) * ${widthFraction})"`,
+    `width="${l.box.width}" height="${l.box.height}"`,
+    'alt=""',
+    eager ? 'fetchpriority="high"' : 'loading="lazy"',
+    'decoding="async"',
+  ].filter(Boolean);
+  return `<img ${attrs.join(' ')} />`;
+}
+
+async function writeMarkup(layersByScene) {
+  const htmlPath = path.join(SITE_DIR, 'index.html');
+  let html = await readFile(htmlPath, 'utf8');
+  const sceneOrder = Object.keys(scenes);
+  for (const [scene, layers] of Object.entries(layersByScene)) {
+    const region = new RegExp(`([ \\t]*)<!-- layers:${scene} -->[\\s\\S]*?<!-- /layers -->`);
+    const match = html.match(region);
+    if (!match) throw new Error(`index.html has no <!-- layers:${scene} --> region`);
+    const indent = match[1];
+    const eager = sceneOrder.indexOf(scene) === 0; // first scene is above the fold
+    const tags = layers.map((l) => `${indent}${imgTag(l, eager)}`).join('\n');
+    html = html.replace(region, `${indent}<!-- layers:${scene} -->\n${tags}\n${indent}<!-- /layers -->`);
+  }
+  await writeFile(htmlPath, html);
+}
+
+const layersByScene = {};
+for (const [scene, layers] of Object.entries(scenes)) {
+  layersByScene[scene] = await Promise.all(layers.map((l, i) => processLayer(scene, l, i)));
+}
+
+const all = Object.values(layersByScene).flat();
+const css = [
+  '/* Generated by scripts/optimize-images.mjs. Do not edit by hand. */',
+  '/* Each layer is placed at its crop position on the 4000×3000 source canvas. */',
+  ...all.map(cssRule),
+  '',
+].join('\n');
+await writeFile(path.join(SITE_DIR, 'css', 'layers.generated.css'), css);
+await writeMarkup(layersByScene);
+
+// Social preview (Open Graph): the first scene, composed from its layers.
+const [firstScene, firstLayers] = Object.entries(scenes)[0];
+const composed = await sharp({
+  create: { ...CANVAS, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 1 } },
+})
+  .composite(firstLayers.map((l) => ({ input: path.join(SRC_DIR, firstScene, l.src) })))
+  .png()
+  .toBuffer();
+await sharp(composed)
+  .resize(1200, 630, { fit: 'cover', position: 'attention' })
+  .jpeg({ quality: 82, mozjpeg: true })
+  .toFile(path.join(SITE_DIR, 'assets', 'og.jpg'));
+
+const kb = (bytes) => `${Math.round(bytes / 1024)}KB`;
+for (const l of all) {
+  console.log(`${l.scene}/${l.name}`.padEnd(28), `${l.box.width}×${l.box.height}`.padEnd(11),
+    l.variants.map((v) => kb(v.size)).join(' / '));
+}
+const total = (suffixIndex) => all.reduce((sum, l) => sum + l.variants[suffixIndex].size, 0);
+console.log(`total: small ${kb(total(0))}, large ${kb(total(1))}`);
