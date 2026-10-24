@@ -22,6 +22,20 @@
   translate: 0 0;
 }
 
+/* Never let keyboard focus land on content that is still invisible. */
+.js .scene:focus-within .scene__content > * {
+  opacity: 1;
+  translate: 0 0;
+  transition-duration: 0.2s;
+}
+
+@media print {
+  .js .scene__content > * {
+    opacity: 1;
+    translate: none;
+  }
+}
+
 /* Chapter rail: roman numerals pinned to the right edge. */
 .chapters {
   position: fixed;

@@ -30,4 +30,7 @@ export function initReveal(scenes, chapterLinks) {
     visibility.observe(scene);
     current.observe(scene);
   }
+
+  // Tells the inline fallback in index.html that hidden content will be revealed.
+  document.documentElement.classList.add('reveal-ready');
 }
