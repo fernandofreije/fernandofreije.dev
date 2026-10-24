@@ -112,6 +112,9 @@
   margin-top: -100svh;
   min-height: 100svh;
   padding: var(--space-5) var(--gutter);
+  /* Decorations (scrims, rotated pages) must never widen the page. `clip`, unlike
+     `hidden`, creates no scroll container, so sticky positioning keeps working. */
+  overflow-x: clip;
 }
 
 /* Keep content clear of the fixed chapter rail. */
