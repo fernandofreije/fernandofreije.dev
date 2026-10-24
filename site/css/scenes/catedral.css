@@ -11,6 +11,7 @@
 
 .scene--catedral .scene__content {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   justify-items: end;
 }
@@ -77,6 +78,13 @@
   font-family: var(--font-display);
   font-size: 1.8rem;
   rotate: -12deg;
+}
+
+/* Keep the seal inside the viewport on narrow screens (no horizontal scroll). */
+@media (max-width: 40rem) {
+  .calling-card__seal {
+    right: -0.25rem;
+  }
 }
 
 @media (max-aspect-ratio: 1 / 1) {
