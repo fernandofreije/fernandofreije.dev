@@ -13,7 +13,7 @@ Visual feedback is the main quality signal for this site. Don't trust CSS reason
    - `--reduced-motion` emulates `prefers-reduced-motion: reduce`
    - `--forced-colors` emulates Windows High Contrast (`forced-colors: active`)
    - `--url <url>` targets another server
-3. Read the PNGs in `.shots/` (`<viewport>[-reduced|-forced]-<scene-id>.png` and `…-full.png`) with the Read tool. Compare them against the composed references in `art-src/<scene>/ref.png`.
+3. Read the PNGs in `.shots/` (`<viewport>[-reduced|-forced]-<scene-id>.png` and `…-full.png`) with the Read tool. Compare them against the composed references in `art-src/<scene>/ref.png`. Off the Record has no scenes and is shot as `<viewport>[-mode]-record.png` and `…-record-full.png`. With no data it only shows empty states; to see the cards, run `npm run record` with keys or a filled-in config first.
 4. The run exits non-zero if any `!` line is printed. Treat every one as a bug: console errors, failed requests, HTTP ≥ 400, axe-core WCAG 2.2 AA and best-practice violations, and horizontal overflow (WCAG 1.4.10 reflow).
 
 ## Accessibility checks the script can't do
