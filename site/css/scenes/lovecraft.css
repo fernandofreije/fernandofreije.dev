@@ -174,25 +174,10 @@
   color: color-mix(in srgb, var(--paper-ink) 72%, transparent);
 }
 
-.page__notes {
-  display: grid;
-  gap: 0.35rem;
+/* One line on what the job was, in the scholar's plain hand. */
+.page__summary {
   font-family: var(--font-body);
   line-height: 1.4;
-}
-
-.page__notes li {
-  position: relative;
-  padding-left: 1.1rem;
-}
-
-.page__notes li::before {
-  content: "✦";
-  position: absolute;
-  left: 0;
-  font-size: 0.7em;
-  line-height: 2;
-  color: var(--ink-red);
 }
 
 /* The stack, inked on as rubber stamps. */
