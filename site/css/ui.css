@@ -1,9 +1,9 @@
 /* ui.css: in-world UI shared by every scene (chapter rail, reveal, footer) */
 
-/* Small-caps labels. Cinzel has no lowercase (it draws small capitals), so no
+/* Small-caps labels. Alegreya SC draws lowercase as small capitals, so no
    text-transform is needed, which keeps screen readers from spelling words out. */
 .kicker {
-  font-family: var(--font-display);
+  font-family: var(--font-label);
   font-size: 0.85rem;
   letter-spacing: 0.22em;
   color: var(--accent);
@@ -56,7 +56,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  font-family: var(--font-display);
+  font-family: var(--font-label);
   text-decoration: none;
   color: var(--ink-muted);
   text-shadow: 0 1px 6px rgb(0 0 0 / 0.8);
@@ -79,7 +79,7 @@
   order: -1;
   font-size: 0.85rem;
   letter-spacing: 0.2em;
-  /* No text-transform: Cinzel draws lowercase as small capitals anyway, and
+  /* No text-transform: Alegreya SC draws lowercase as small capitals anyway, and
      uppercased names can be spelled out letter by letter by screen readers. */
   opacity: 0;
   translate: 0.5rem 0;
@@ -155,7 +155,7 @@
   border-radius: 999px;
   background: rgb(0 0 0 / 0.55);
   backdrop-filter: blur(4px);
-  font-family: var(--font-display);
+  font-family: var(--font-label);
   font-size: 0.85rem;
   letter-spacing: 0.08em;
   cursor: pointer;
