@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "serve site -l 8080",
     "images": "node scripts/optimize-images.mjs",
+    "record": "node --env-file-if-exists=.env scripts/off-the-record.mjs",
     "shots": "node .claude/skills/visual-check/run.mjs"
   },
   "devDependencies": {

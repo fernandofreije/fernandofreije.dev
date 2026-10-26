@@ -1,0 +1,85 @@
+{
+  "updated": "2026-10-26",
+  "games": {
+    "items": [
+      {
+        "appid": 991270,
+        "name": "The Legend of Heroes: Trails of Cold Steel III",
+        "cover": "assets/off-the-record/games/991270.webp"
+      },
+      {
+        "appid": 3486530,
+        "name": "Stupid Never Dies",
+        "cover": "assets/off-the-record/games/3486530.webp"
+      },
+      {
+        "name": "World of Warcraft: Forever",
+        "href": "https://worldofwarcraft.blizzard.com/",
+        "image": "art-src/off-the-record/wow-forever.png",
+        "hand": true,
+        "cover": "assets/off-the-record/games/world-of-warcraft-forever.webp"
+      }
+    ],
+    "source": "steam"
+  },
+  "films": {
+    "items": [
+      {
+        "tmdb": 1058424,
+        "slug": "hope-2026",
+        "title": "Hope",
+        "year": 2026,
+        "cover": "assets/off-the-record/films/1058424.webp"
+      },
+      {
+        "tmdb": 1742441,
+        "slug": "v-h-s-mixtape-2026",
+        "title": "V/H/S/MIXTAPE",
+        "year": 2026,
+        "cover": "assets/off-the-record/films/1742441.webp"
+      },
+      {
+        "tmdb": 1284046,
+        "slug": "onslaught-2026",
+        "title": "Onslaught",
+        "year": 2026,
+        "cover": "assets/off-the-record/films/1284046.webp"
+      },
+      {
+        "tmdb": 1341284,
+        "slug": "missing-child-videotape-2025",
+        "title": "Missing Child Videotape",
+        "year": 2025,
+        "cover": "assets/off-the-record/films/1341284.webp"
+      }
+    ],
+    "source": "trakt"
+  },
+  "books": {
+    "items": [
+      {
+        "isbn": "9780316129084",
+        "title": "Leviathan Wakes",
+        "author": "James S. A. Corey",
+        "hand": true,
+        "cover": "assets/off-the-record/books/9780316129084.webp"
+      },
+      {
+        "isbn": "9780008764937",
+        "title": "Empire of the Damned",
+        "author": "Jay Kristoff",
+        "image": "art-src/off-the-record/empire-of-the-damned.png",
+        "hand": true,
+        "cover": "assets/off-the-record/books/9780008764937.webp"
+      },
+      {
+        "isbn": "9780765378804",
+        "title": "Hex",
+        "author": "Thomas Olde Heuvelt",
+        "hand": true,
+        "cover": "assets/off-the-record/books/9780765378804.webp"
+      }
+    ],
+    "source": "hand"
+  }
+}

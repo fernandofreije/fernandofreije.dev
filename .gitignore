@@ -22,5 +22,8 @@ build/
 .vite/
 .shots/
 
+# Local secrets (API keys for npm run record)
+.env
+
 # Logs
 npm-debug.log*
