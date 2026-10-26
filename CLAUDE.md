@@ -3,9 +3,10 @@
 A personal site and CV told as three illustrated chapters (Dark Fantasy, Lovecraft, Catedral). Static, build-free, deployed from `site/` to GitHub Pages.
 
 ## Layout
-- `site/` is the only thing that ships: `index.html` (all content inline), `css/`, `js/`, `assets/`
+- `site/` is the only thing that ships: `index.html` (all content inline), `off-the-record.html` (playing/watching/reading appendix), `css/`, `js/`, `assets/`
 - `art-src/` holds the original full-canvas PNGs and the `ref.png` compositions (not deployed)
 - `scripts/` holds the image pipeline; `scenes.config.mjs` is the source of truth for layer order, depth and animation roles
+- `scripts/off-the-record.mjs` fills the `<!-- record:* -->` regions from Steam, Trakt and `off-the-record.config.mjs` (hide/add entries there); don't edit those regions by hand
 - `.claude/skills/` has `visual-check` (screenshots) and `optimize-images` (art pipeline)
 
 ## Conventions
@@ -20,4 +21,5 @@ A personal site and CV told as three illustrated chapters (Dark Fantasy, Lovecra
 ## Commands
 - `npm run dev` serves `site/` on :8080
 - `npm run images` regenerates the assets after art or config changes
-- `npm run shots` runs the visual and accessibility check (add `-- --reduced-motion` or `-- --forced-colors`); always run it after UI changes and look at the PNGs in `.shots/`
+- `npm run record` refreshes Off the Record (accounts and API keys in `.env`, never in the repo). It only runs locally: the owner reviews and commits the result, so never add it to CI
+- `npm run shots` runs the visual and accessibility check on both pages (add `-- --reduced-motion` or `-- --forced-colors`); always run it after UI changes and look at the PNGs in `.shots/`

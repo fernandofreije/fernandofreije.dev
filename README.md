@@ -37,11 +37,20 @@ The illustrations are exported as full-canvas transparent PNGs, one per layer. S
 | Image payload      | ~14 MB   | 394 KB / 910 KB (1× / 2×) |
 | Full page transfer | ~14 MB   | ~1.1 MB        |
 
+## Off the Record
+
+`off-the-record.html` is an appendix with no illustration: what I'm playing, watching and reading right now, as photographs pinned to paper. The latest of each also appears in the footer of the main page.
+
+`scripts/off-the-record.mjs` writes it. Games come from Steam (the most recently played in my library) and films from my Trakt history. In `scripts/off-the-record.config.mjs` I can hide any of them and add entries by hand, such as games that aren't on Steam. Books are always hand-written. Covers are downloaded from Steam, TMDB and Open Library and saved as small WebPs, so visitors never load anything from those services. The page credits all four sources in its footer, as Trakt's and TMDB's API terms ask. The markup goes into marked regions of the HTML, like the art layers, so the page reads fully without JavaScript.
+
+I run it by hand with `npm run record`, with the accounts and API keys in a git-ignored `.env`, so the public repo never names them. Then I review the diff, adjust the config if something shouldn't be there, and commit. The deploy only publishes what's committed. If an API is down, that section keeps its last data.
+
 ## Project layout
 
 ```
 site/                  deployed as-is to GitHub Pages
   index.html           all content, inline
+  off-the-record.html  the appendix: playing, watching, reading
   css/                 base · scene engine · in-world UI · one file per scene
   js/                  main · reveal (IntersectionObserver) · parallax
   assets/              generated WebP layers, favicon, social preview
@@ -56,9 +65,10 @@ scripts/               image pipeline and scene composition config
 npm install
 npm run dev      # http://localhost:8080
 npm run images   # after changing anything in art-src/ or scenes.config.mjs
+npm run record   # refresh Off the Record, then review and commit (keys in .env, see .env.example)
 npm run shots    # screenshots of every scene at desktop / ultrawide / mobile
 ```
 
 ## Deployment
 
-Pushing to `main` runs `.github/workflows/pages.yml`, which publishes `site/` to GitHub Pages. Nothing is built in CI because the site is already static.
+Pushing to `main` runs `.github/workflows/pages.yml`, which publishes `site/` to GitHub Pages. Nothing is built in CI because the site is already static, Off the Record included.

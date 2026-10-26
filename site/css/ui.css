@@ -116,6 +116,27 @@
   text-align: center;
 }
 
+.site-footer > * + * {
+  margin-top: var(--space-1);
+}
+
+/* What I'm into lately, linking to Off the Record (written by scripts/off-the-record.mjs). */
+.site-footer__lately {
+  margin-bottom: var(--space-3);
+  color: var(--ink);
+  font-size: 1rem;
+  font-style: normal;
+}
+
+.site-footer__lately cite {
+  font-style: italic;
+}
+
+.site-footer__lately a {
+  color: var(--accent);
+  text-underline-offset: 0.3em;
+}
+
 /*
  * "Pause animations" switch (WCAG 2.2.2). Checking it stills every scene into a
  * resting composition; JS only persists the choice and stops parallax.

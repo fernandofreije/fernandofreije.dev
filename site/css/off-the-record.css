@@ -1,0 +1,190 @@
+/* off-the-record.css: the appendix page. No illustration here, so it borrows the
+   journal's paper and ink: each game, film or book is a photograph pinned to the page. */
+
+.appendix,
+.appendix__bar {
+  --paper: #e8dcc0;
+  --paper-ink: #2a1d14;
+  --ink-red: #8c1d3c;
+}
+
+.appendix__bar {
+  padding: var(--space-2) var(--gutter) 0;
+}
+
+.appendix__back {
+  display: inline-flex;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid rgb(243 234 216 / 0.35);
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.appendix__back:hover,
+.appendix__back:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.appendix {
+  display: grid;
+  /* minmax(0, …) gives the card grids a definite width; otherwise auto-fill sizes
+     itself from their max-width and the page scrolls sideways on phones. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+  width: min(100% - 2 * var(--gutter), 62rem);
+  margin-inline: auto;
+  padding-block: var(--space-4) var(--space-5);
+}
+
+.appendix__intro {
+  max-width: 36rem;
+}
+
+.appendix__intro h1 {
+  margin-block: var(--space-1) var(--space-2);
+  font-size: clamp(2.2rem, 1.6rem + 3vw, 3.6rem);
+  color: var(--accent);
+}
+
+.appendix__updated {
+  margin-top: var(--space-2);
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.appendix__section h2 {
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  font-size: clamp(1.4rem, 1.2rem + 1vw, 1.9rem);
+}
+
+.records {
+  display: grid;
+  /* Two across even at 320px; min() keeps a lone card from overflowing. */
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 8rem), 1fr));
+  gap: var(--space-4) var(--space-3);
+  max-width: 52rem;
+}
+
+.records__empty {
+  color: var(--ink-muted);
+  font-style: italic;
+}
+
+/* A photograph on a paper mount, held by a pin, the caption written below. */
+.record {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0.5rem var(--space-2);
+  background: var(--paper);
+  color: var(--paper-ink);
+  box-shadow: 0 10px 24px rgb(0 0 0 / 0.5);
+  rotate: -1.2deg;
+  transition: rotate 0.3s var(--ease-out), translate 0.3s var(--ease-out);
+}
+
+.record:nth-child(3n + 2) {
+  rotate: 0.9deg;
+}
+
+.record:nth-child(3n) {
+  rotate: -0.4deg;
+}
+
+.record::before {
+  content: "";
+  position: absolute;
+  top: -0.45rem;
+  left: 50%;
+  z-index: 1;
+  width: 0.9rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--ink-red);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.5);
+  translate: -50% 0;
+}
+
+.record:hover,
+.record:has(:focus-visible) {
+  rotate: 0deg;
+  translate: 0 -0.25rem;
+}
+
+.record:has(:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.record__cover {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  background: rgb(42 29 20 / 0.15);
+}
+
+/* No cover found: the title set like a plain cloth binding. */
+.record__cover--blank {
+  display: grid;
+  place-items: center;
+  padding: var(--space-1);
+  border: 1px solid rgb(42 29 20 / 0.3);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  line-height: 1.3;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.record__title {
+  margin-top: 0.6rem;
+  font-family: var(--font-hand);
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.record__title a {
+  text-decoration: none;
+}
+
+/* The whole photograph is the link target. */
+.record__title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.record__title a:focus-visible {
+  outline: none;
+}
+
+.record__meta {
+  margin-top: 0.2rem;
+  font-size: 0.85rem;
+  font-style: italic;
+  line-height: 1.35;
+  color: color-mix(in srgb, var(--paper-ink) 78%, transparent);
+}
+
+/* Forced palettes drop the paper mount; keep each card's edge and its focus ring. */
+@media (forced-colors: active) {
+  .record {
+    border: 1px solid CanvasText;
+  }
+
+  .record:has(:focus-visible) {
+    outline-color: Highlight;
+  }
+}
