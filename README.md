@@ -4,6 +4,8 @@ My personal site, told in three illustrated chapters: a knight's campfire (who I
 
 It's deliberately small: semantic HTML, modern CSS and ~100 lines of JavaScript. No framework and no build step at runtime.
 
+It's also an experiment in how AI-assisted code, hand-written code and hand-made art can work together. The illustrations are drawn by hand and no AI generated them. The code is a mix: some I wrote myself and some I wrote with an AI assistant, always reviewed and checked against the art with the visual check below. The goal is to find out where that collaboration helps, where it gets in the way, and how to keep the human-made parts at the centre.
+
 ## How it works
 
 **Scenes are CSS, not script.** Each chapter is a full-viewport sticky backdrop with content scrolling over it. The backdrop holds a 4:3 *stage* that mirrors the 4000×3000 source canvas and is sized like `object-fit: cover`, so the art never letterboxes. A per-scene focus point (`--focus-x/--focus-y`) decides what survives the crop on phones and ultra-wide screens.
