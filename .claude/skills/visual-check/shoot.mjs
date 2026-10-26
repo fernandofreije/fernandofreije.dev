@@ -2,6 +2,8 @@
 // Reports console errors, page weight, axe-core violations and horizontal overflow,
 // and exits non-zero if any check fails.
 //
+// Visits the index and every page in PAGES.
+//
 // Usage: node shoot.mjs [--url http://localhost:8080] [--only desktop,mobile]
 //                       [--reduced-motion] [--forced-colors]
 import { existsSync, mkdirSync } from 'node:fs';
@@ -43,7 +45,11 @@ const selected = opts.only ? opts.only.split(',') : Object.keys(VIEWPORTS);
 const mode = opts['forced-colors'] ? '-forced' : opts['reduced-motion'] ? '-reduced' : '';
 let failures = 0;
 
-for (const name of selected) {
+// Pages besides the index. Each gets a first-view shot and a full-page shot,
+// named `<viewport>[-mode]-<label>[-full].png`.
+const PAGES = { 'off-the-record.html': 'record' };
+
+for (const name of selected) for (const [file, label] of [['', ''], ...Object.entries(PAGES)]) {
   const context = await browser.newContext({
     viewport: VIEWPORTS[name],
     ...VIEWPORTS[name],
@@ -61,7 +67,7 @@ for (const name of selected) {
     bytes += Number(r.headers()['content-length'] ?? 0);
   });
 
-  await page.goto(opts.url, { waitUntil: 'networkidle' });
+  await page.goto(new URL(file, opts.url).href, { waitUntil: 'networkidle' });
   await page.waitForTimeout(1500);
   const initialBytes = bytes;
 
@@ -72,7 +78,9 @@ for (const name of selected) {
     await page.waitForTimeout(2500); // let reveal transitions and the first animation beats settle
     await page.screenshot({ path: path.join(outDir, `${name}${mode}-${id}.png`) });
   }
-  await page.screenshot({ path: path.join(outDir, `${name}${mode}-full.png`), fullPage: true });
+  const prefix = `${name}${mode}${label && `-${label}`}`;
+  if (label) await page.screenshot({ path: path.join(outDir, `${prefix}.png`) });
+  await page.screenshot({ path: path.join(outDir, `${prefix}-full.png`), fullPage: true });
 
   // Accessibility: every scene has been revealed by now, so axe sees the final state.
   // Contrast over the illustrations can't be computed by axe and comes back as "incomplete".
@@ -93,7 +101,7 @@ for (const name of selected) {
   }
 
   const kb = (n) => `${Math.round(n / 1024)}KB`;
-  console.log(`${name}${mode}: first view ${kb(initialBytes)}, total ${kb(bytes)}, ${problems.length} problem(s)`);
+  console.log(`${prefix}: first view ${kb(initialBytes)}, total ${kb(bytes)}, ${problems.length} problem(s)`);
   for (const p of problems) console.log(`  ! ${p}`);
   failures += problems.length;
   await context.close();
