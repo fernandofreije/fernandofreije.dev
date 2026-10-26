@@ -1,9 +1,12 @@
 /* base.css: reset, design tokens, typography */
 
 :root {
-  --font-display: "Cinzel", "Trajan Pro", Georgia, serif;
-  --font-body: "EB Garamond", Garamond, Georgia, serif;
-  --font-hand: "IM Fell English", "EB Garamond", Georgia, serif;
+  /* Blackletter for headings; small labels use small capitals, which stay
+     legible at sizes where blackletter doesn't. */
+  --font-display: "Grenze Gotisch", Georgia, serif;
+  --font-label: "Alegreya SC", Georgia, serif;
+  --font-body: "Alegreya", Georgia, serif;
+  --font-hand: "Alegreya", Georgia, serif;
 
   --ink: #f3ead8;
   --ink-muted: color-mix(in srgb, var(--ink) 72%, transparent);
