@@ -5,8 +5,8 @@
      legible at sizes where blackletter doesn't. */
   --font-display: "Grenze Gotisch", Georgia, serif;
   --font-label: "Alegreya SC", Georgia, serif;
-  --font-body: "Alegreya", Georgia, serif;
-  --font-hand: "Alegreya", Georgia, serif;
+  --font-body: "Texturina", Georgia, serif;
+  --font-hand: "Texturina", Georgia, serif;
 
   --ink: #f3ead8;
   --ink-muted: color-mix(in srgb, var(--ink) 72%, transparent);
