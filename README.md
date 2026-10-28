@@ -1,10 +1,10 @@
 # Persona webpage
 
-My personal site, told in three illustrated chapters: a knight's campfire (who I am), a scholar's haunted coast (where I've worked) and a cathedral square (how to reach me). All the art is original and hand-layered for parallax.
+My personal site, told in three illustrated chapters: a knight's campfire (who I am), a scholar's haunted coast (where I've worked) and a cathedral square (how to reach me). All the art is original, drawn by [@omanora](https://x.com/omanora) and hand-layered for parallax.
 
 It's deliberately small: semantic HTML, modern CSS and ~100 lines of JavaScript. No framework and no build step at runtime.
 
-It's also an experiment in how AI-assisted code, hand-written code and hand-made art can work together. The illustrations are drawn by hand and no AI generated them. The code is a mix: some I wrote myself and some I wrote with an AI assistant, always reviewed and checked against the art with the visual check below. The goal is to find out where that collaboration helps, where it gets in the way, and how to keep the human-made parts at the centre.
+It's also an experiment in how AI-assisted code, hand-written code and hand-made art can work together. The illustrations are drawn by hand by [@omanora](https://x.com/omanora), and no AI generated them. The code is a mix: some I wrote myself and some I wrote with an AI assistant, always reviewed and checked against the art with the visual check below. The goal is to find out where that collaboration helps, where it gets in the way, and how to keep the human-made parts at the centre.
 
 ## How it works
 
