@@ -29,4 +29,4 @@ After UI changes, also run with `--reduced-motion` and `--forced-colors` and loo
 - Text stays readable over the art and nothing overlaps the chapter rail or the pause switch.
 
 ## Environment notes
-`run.mjs` detects WSL and runs `shoot.mjs` with Windows `node.exe` against the Windows Edge install, because WSL's Chromium is missing system libraries. On other machines it uses the local Node and Playwright's browser. Set `BROWSER_PATH` to override the browser executable. axe-core is injected from `node_modules`, so the audit works offline.
+`run.mjs` detects WSL and runs `shoot.mjs` with Windows `node.exe` against the Windows Edge install, because WSL's Chromium is missing system libraries. If the project lives in the Linux filesystem (not under `/mnt/<drive>/`), Windows only sees it as `\\wsl.localhost\...`, where Node can't resolve packages; `run.mjs` then goes through `cmd /c pushd`, which maps a temporary drive letter for the run and removes it afterwards. On other machines it uses the local Node and Playwright's browser. Set `BROWSER_PATH` to override the browser executable. axe-core is injected from `node_modules`, so the audit works offline.

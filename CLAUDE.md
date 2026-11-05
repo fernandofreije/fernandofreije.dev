@@ -7,7 +7,7 @@ A personal site and CV told as three illustrated chapters (Dark Fantasy, Lovecra
 - `art-src/` holds the original full-canvas PNGs and the `ref.png` compositions (not deployed)
 - `scripts/` holds the image pipeline; `scenes.config.mjs` is the source of truth for layer order, depth and animation roles
 - `scripts/off-the-record.mjs` fills the `<!-- record:* -->` regions from Steam, Trakt and `off-the-record.config.mjs` (hide/add entries there); don't edit those regions by hand
-- `.claude/skills/` has `visual-check` (screenshots) and `optimize-images` (art pipeline)
+- `.claude/skills/` has `visual-check` (screenshots), `optimize-images` (art pipeline) and `git-workflow` (semantic commits, rebase-only history)
 
 ## Conventions
 - No frameworks and no runtime build. JS is progressive enhancement only: the page must read fully without it.
